@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import urllib
 import math
 from argparse import ArgumentParser
+from .zky_properties import COOKIE,USER_AGENT
 parser = ArgumentParser()
 parser.add_argument('--year', default='2019', choices=['2018', '2019', '2020', '2021'])
 parser.add_argument('--subject', default='地学', required=True)
@@ -33,10 +34,10 @@ data = {
 }
 url = "https://www.fenqubiao.com/Core/CategoryList.aspx"
 headers = {
-    "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Mobile Safari/537.36 Edg/131.0.0.0",
+    "User-Agent": USER_AGENT,
     "Connection":"keep-alive",
     "Content-Type":"application/x-www-form-urlencoded; charset=UTF-8",
-    "Cookie": "Hm_lvt_0dae59e1f85da1153b28fb5a2671647f=1732019568,1732063684,1732068719; HMACCOUNT=1ADEC3E8881F547C; ASP.NET_SessionId=ozcepcwi000qrzuossgidwjn; __AntiXsrfToken=c8687aae860e4931b451c41f198c6863; Hm_lpvt_0dae59e1f85da1153b28fb5a2671647f=1732071076",
+    "Cookie": COOKIE,
     "Host":"www.fenqubiao.com",
     "Origin":"https://www.fenqubiao.com",
     "Referer":"https://www.fenqubiao.com/Core/CategoryList.aspx",

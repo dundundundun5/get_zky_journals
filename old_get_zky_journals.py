@@ -5,6 +5,7 @@ from argparse import ArgumentParser
 import requests
 import urllib
 from bs4 import BeautifulSoup
+from .zky_properties import COOKIE,USER_AGENT
 parser = ArgumentParser()
 parser.add_argument('--year',default='2018')
 args = parser.parse_args()
@@ -18,10 +19,10 @@ PATH=f"./old_json_{YEAR}"
 
 
 headers={
-    "User-Agent":"Mozilla/5.0(Linux;Android6.0;Nexus5Build/MRA58N)AppleWebKit/537.36(KHTML,likeGecko)Chrome/131.0.0.0MobileSafari/537.36Edg/131.0.0.0",
+    "User-Agent":USER_AGENT,
     "Connection":"keep-alive",
     "Content-Type":"application/x-www-form-urlencoded;charset=UTF-8",
-    "Cookie":"Hm_lvt_0dae59e1f85da1153b28fb5a2671647f=1732063684,1732068719,1732078752,1732092279; HMACCOUNT=67BA1261474FAE44; ASP.NET_SessionId=dl5n1ycujp14ba0uycip1lur; __AntiXsrfToken=44374520e63d4cd8a1c41ec2d320673c; Hm_lpvt_0dae59e1f85da1153b28fb5a2671647f=1732092303",
+    "Cookie":COOKIE,
     "Host":"www.fenqubiao.com",
     "Referer":"https://www.fenqubiao.com/Core/CategoryList.aspx",
 }
