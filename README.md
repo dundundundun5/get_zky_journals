@@ -3,28 +3,43 @@
 **(必须确认)**
 1. 前提1：保证电脑有中科院数据库访问Cookie
 
-    **修改zky_properties.py中的COOKIE和USER_AGENT**
+    修改zky_properties.py中的`COOKIE`和`USER_AGENT`
 
 1. 前提2：保证电脑有python一系列库
 
+    `pip install pandas`
+
+    `pip install lxml`
+
+    `如果还缺就自己补一下`
 
 
-## 升级版说明 (具备前提后)
+## 升级版说明 (2025年更新)
 中科院期刊查询接口使用方法为：期刊名-id
 
 id号需要手动查询
 
-通过浏览器开发者工具能从中科院2022升级版的接口里看到期刊id号是
+通过浏览器开发者工具能从中科院2025升级版的接口里看到期刊id号是
 
 https://advanced.fenqubiao.com/Macro/PageData
 
-https://advanced.fenqubiao.com/Macro/GetJson?start=1&length=20
+`data = {
+            "draw":1,
+            "start":0,
+            "length":20,
+            "search[value]":"",
+            "search[regex]":False,
+            "name": "",
+            "year": -1
+        }`
 
-https://advanced.fenqubiao.com/Macro/GetJson?start=21&length=20
+其中`name`是学科名称，不需要url转码
 
-但是这个接口无法直接访问，直接访问会被过滤器拦截，所以手动复制从接口返回的json数据，一共27页，每条上限20个，一共524个期刊，一共复制27次
+`year`就是`int`年份
 
-http://advanced.fenqubiao.com/Journal/Detail/249639
+~~http://advanced.fenqubiao.com/Journal/Detail/249639~~ 已失效
+
+现在是 http://advanced.fenqubiao.com/Journal/Detail/一串字母
 
 上方链接是一个静态网页，罗列了一个期刊的所有信息，只需变换id，即可汇总不同期刊的具体信息
 
@@ -33,29 +48,29 @@ http://advanced.fenqubiao.com/Journal/Detail/249639
 
 
 
-2. 获取中科院title-id的json键值对
+1. 获取中科院title-id的json键值对
 
-    ```python get_n_save_jsons.py --year 填入升级版的年份```
+    `python get.py --year 填入升级版的年份`
 
-1. 获取中科院的期刊，并按大类保存为excel
+    `默认2025年`
 
-    ```python get_zky_journals.py --year 同上填入年份```
+    `python get.py`
 
-4. （可选）将中科院当前的所有大类excel合并为一个excel
+2. （可选）将中科院当前的所有大类excel合并为一个excel
 
     ```python merge.py --year 同上填入年份```
 
 
-## 旧版说明(具备前提后)
+## 旧版说明(具备前提后，爬取过程可能已经失效，但是excel文件依然有效)
 
 使用动态网页ASP.NET,每个网页的post负载都需要3个验证码才能成功相应，验证码存在于该网页源码的底部
 
 ## 旧版使用方法
-1. 获取year+title 
+1. 获取`year`+`title `
 
-$i 替换成年份
+    `$i 替换成年份`
    
-    ```python old_get_n_save_csvs.py --year $i --subject 地学 ```
+    ```python old_get_n_save_csvs.py --year $i --subject 地学```
 
     ```python old_get_n_save_csvs.py --year $i --subject 地学天文```
 
