@@ -2,3 +2,4 @@ json_*/
 *.zip
 excel_*/
 *.xlsx
+.pycache__/
