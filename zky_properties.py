@@ -1,6 +1,6 @@
 
-COOKIE = ""
-USER_AGENT = ""
+COOKIE = "填入你的cookie"
+USER_AGENT = "填入你的user-agent"
 
 SUBJECTS_2019 = {"地球科学":449,
             "物理与天体物理":307,

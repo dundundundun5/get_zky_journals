@@ -7,9 +7,13 @@
 
 1. 前提2：保证电脑有python一系列库
 
-    `pip install pandas`
+    `pip install beautifulsoup4 -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple`
+    
+    `pip install pandas -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple`
 
-    `pip install lxml`
+    `pip install lxml -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple`
+
+    `pip install openpyxl -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple`
 
     `如果还缺就自己补一下`
 

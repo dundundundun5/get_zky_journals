@@ -10,6 +10,7 @@ import os
 from bs4 import BeautifulSoup
 from urllib.parse import quote
 import warnings
+import time
 warnings.filterwarnings("ignore")
 parser = ArgumentParser()
 parser.add_argument('--year', default='2025', choices=['2019', '2020', '2021', '2022', '2023', '2025'])
@@ -20,11 +21,11 @@ path =f"./json_{year}"
 final_path = f"./excel_{year}/"
 SUBJECT = ""
 json_exist = True
-
+gap_second = 0.2 # prevent being blocked by server
 headers = {
     "User-Agent": USER_AGENT,
     "Connection":"keep-alive",
-    "Content-Type":"application/x-www-form-urlencoded; charset=UTF-8",
+    "Content-Type":"application/json; charset=utf-8",
     "Cookie": COOKIE,
     "Host":"advanced.fenqubiao.com",
     }
@@ -42,16 +43,16 @@ def read_json(path, subject):
 
 def get_pages_by_id(id, urlencode_subject):
     url = f"https://advanced.fenqubiao.com/Journal/Detail/{id}"
-    headers = {
+    page_headers = {
     "User-Agent": USER_AGENT,
     "Connection":"keep-alive",
-    "Content-Type":"application/x-www-form-urlencoded; charset=UTF-8",
+    "Content-Type":"text/html; charset=utf-8",
     "Cookie": COOKIE,
     "Host":"advanced.fenqubiao.com",
     "Referer":f"https://advanced.fenqubiao.com/Macro/Journal?name={urlencode_subject}&year={year}",
     }
     
-    r = requests.get(url=url, headers=headers)
+    r = requests.get(url=url, headers=page_headers)
     # print(r.text)
     return r.text
 
@@ -147,23 +148,20 @@ for key,value in subjects.items():
     result_json = read_json(path, key)
     for i in range(len(result_json)):
         zky_journal_id = result_json[i] 
+        time.sleep(gap_second) # prevent being blocked by server
         t = get_pages_by_id(zky_journal_id, quote(key))
         info = get_info(t, key)
         info["id"] = zky_journal_id
+        try:
         # 制作视图，重新整理数据
-        issn = ""
-        if int(year) == 2025:
-            issn = info["ISSN / EISSN"].split(" / ")[0]
-        else:
-            issn = info["ISSN"]
-        oa = ""
-        if int(year) == 2025:
-            oa = info["OA Journal Index（OAJ）"]
-        else:
-            oa = info["Open Access"]
-        csv = [info["刊名"],info["id"],int(info["年份"]),info["分区"],issn,info["Review"],oa,info["最低档"],info["学科信息"]]
-        res_csv.append(csv)
-        print(csv)
+            [journal_name, y, issn, review, open_access, rank, lowest, subject_info, id] = info.values()
+            csv = [journal_name, id, year, rank, issn, review, open_access, lowest, subject_info]
+            res_csv.append(csv)
+            print(csv)
+        except:
+            print(info)
+            continue
+
     res_csv = pd.DataFrame(res_csv, columns=columns)
     print(res_csv.head())
-    res_csv.to_excel(f"{final_path}/中科院{year}升级版_{SUBJECT}.xlsx", index=False)
+    res_csv.to_excel(f"{final_path}/中科院{year}升级版_{key}.xlsx", index=False)
